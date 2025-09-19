@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melix Files V1 - نظام المتاجر</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- الهيكل الرئيسي -->
+    <div class="main-container">
+        <!-- الهيدر -->
+        <header class="shop-header">
+            <div class="logo-section">
+                <img src="assets/images/logo.png" alt="Melix Files Logo" class="logo">
+                <h1 class="shop-title">Melix Files V1</h1>
+            </div>
+            
+            <div class="search-section">
+                <input type="text" id="searchInput" placeholder="ابحث عن عنصر..." class="search-input">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            
+            <div class="player-info">
+                <div class="money-display">
+                    <span class="bank-amount">$100,046</span>
+                    <span class="cash-amount">$0</span>
+                </div>
+                <div class="money-icons">
+                    <img src="assets/icons/bank.png" alt="Bank" class="money-icon">
+                    <img src="assets/icons/cash.png" alt="Cash" class="money-icon">
+                </div>
+            </div>
+        </header>
+
+        <!-- شبكة العناصر -->
+        <div class="items-grid" id="itemsGrid">
+            <!-- سيتم ملئ العناصر dynamically via JavaScript -->
+        </div>
+
+        <!-- معلومات إضافية -->
+        <footer class="shop-footer">
+            <div class="sort-options">
+                <select id="sortSelect" class="sort-select">
+                    <option value="name_asc">الاسم: أ-ي</option>
+                    <option value="name_desc">الاسم: ي-أ</option>
+                    <option value="price_asc">السعر: من الأقل للأعلى</option>
+                    <option value="price_desc">السعر: من الأعلى للأقل</option>
+                    <option value="category">الفئة</option>
+                </select>
+            </div>
+            
+            <div class="cart-section">
+                <button class="cart-btn" id="cartButton">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">0</span>
+                </button>
+                <span class="cart-total">المجموع: $0</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- نافذة السلة -->
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>سلة التسوق</h2>
+                <button class="close-cart" id="closeCart">×</button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- سيتم ملئ العناصر هنا -->
+            </div>
+            <div class="cart-actions">
+                <button class="checkout-btn" id="checkoutButton">إتمام الشراء</button>
+                <button class="clear-cart-btn" id="clearCartButton">تفريغ السلة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- الإشعارات -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <!-- الأصوات -->
+    <audio id="purchaseSound" src="assets/sounds/success.ogg" preload="auto"></audio>
+    <audio id="errorSound" src="assets/sounds/error.ogg" preload="auto"></audio>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

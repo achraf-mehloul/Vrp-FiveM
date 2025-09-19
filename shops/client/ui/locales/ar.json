@@ -1,0 +1,27 @@
+{
+  "shop": {
+    "title": "المتجر",
+    "buy": "شراء",
+    "sell": "بيع",
+    "close": "إغلاق",
+    "confirm_purchase": "هل تريد شراء {item} مقابل {price}$ ؟",
+    "not_enough_money": "ليس لديك رصيد كافٍ!",
+    "purchase_success": "تم شراء {item} بنجاح!",
+    "purchase_failed": "فشل الشراء. حاول مرة أخرى.",
+    "balance": "الرصيد: {amount}$",
+    "cart": "سلة المشتريات",
+    "checkout": "إتمام الشراء"
+  },
+  "categories": {
+    "weapons": "الأسلحة",
+    "clothes": "الملابس",
+    "electronics": "الإلكترونيات",
+    "vehicles": "المركبات",
+    "food": "الطعام و المشروبات"
+  },
+  "admin": {
+    "add_shop": "إضافة متجر",
+    "remove_shop": "حذف متجر",
+    "manage_items": "إدارة العناصر"
+  }
+}

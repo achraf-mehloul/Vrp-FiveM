@@ -1,0 +1,27 @@
+{
+  "shop": {
+    "title": "Shop",
+    "buy": "Buy",
+    "sell": "Sell",
+    "close": "Close",
+    "confirm_purchase": "Do you want to buy {item} for ${price}?",
+    "not_enough_money": "You don't have enough money!",
+    "purchase_success": "You purchased {item} successfully!",
+    "purchase_failed": "Purchase failed. Please try again.",
+    "balance": "Balance: ${amount}",
+    "cart": "Shopping Cart",
+    "checkout": "Checkout"
+  },
+  "categories": {
+    "weapons": "Weapons",
+    "clothes": "Clothes",
+    "electronics": "Electronics",
+    "vehicles": "Vehicles",
+    "food": "Food & Drinks"
+  },
+  "admin": {
+    "add_shop": "Add Shop",
+    "remove_shop": "Remove Shop",
+    "manage_items": "Manage Items"
+  }
+}
