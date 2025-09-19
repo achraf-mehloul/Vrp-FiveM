@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الإدارة - FiveM</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="adminContainer" class="admin-container">
+        <!-- Header -->
+        <div class="admin-header">
+            <div class="admin-logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>نظام الإدارة</h1>
+                <span class="admin-level" id="adminLevel">Super Admin</span>
+            </div>
+            <button id="closeAdmin" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="admin-content">
+            <!-- Quick Actions -->
+            <div class="quick-actions-bar">
+                <h3>إجراءات سريعة</h3>
+                <div class="quick-actions-grid">
+                    <button class="quick-action-btn" data-action="noclip">
+                        <i class="fas fa-walking"></i>
+                        Noclip
+                    </button>
+                    <button class="quick-action-btn" data-action="revive">
+                        <i class="fas fa-heart"></i>
+                        Revive
+                    </button>
+                    <button class="quick-action-btn" data-action="invisible">
+                        <i class="fas fa-eye-slash"></i>
+                        Invisible
+                    </button>
+                    <button class="quick-action-btn" data-action="car">
+                        <i class="fas fa-car"></i>
+                        Spawn Vehicle
+                    </button>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="admin-tabs">
+                <button class="tab-btn active" data-tab="players">
+                    <i class="fas fa-users"></i>
+                    اللاعبين
+                </button>
+                <button class="tab-btn" data-tab="actions">
+                    <i class="fas fa-history"></i>
+                    السجل
+                </button>
+                <button class="tab-btn" data-tab="server">
+                    <i class="fas fa-server"></i>
+                    الخادم
+                </button>
+                <button class="tab-btn" data-tab="settings">
+                    <i class="fas fa-cog"></i>
+                    الإعدادات
+                </button>
+            </div>
+
+            <!-- Players Tab -->
+            <div class="tab-content" id="playersTab">
+                <div class="tab-header">
+                    <h3><i class="fas fa-users"></i> إدارة اللاعبين</h3>
+                    <div class="search-box">
+                        <input type="text" id="playerSearch" placeholder="بحث عن لاعب..." class="search-input">
+                        <i class="fas fa-search search-icon"></i>
+                    </div>
+                </div>
+
+                <div class="players-list" id="playersList">
+                    <!-- Players will be populated here -->
+                </div>
+            </div>
+
+            <!-- Actions Tab -->
+            <div class="tab-content" id="actionsTab" style="display: none;">
+                <div class="tab-header">
+                    <h3><i class="fas fa-history"></i> سجل الإجراءات</h3>
+                </div>
+                
+                <div class="actions-list">
+                    <div class="action-item">
+                        <div class="action-icon">
+                            <i class="fas fa-ban text-danger"></i>
+                        </div>
+                        <div class="action-details">
+                            <div class="action-title">تم حظر اللاعب</div>
+                            <div class="action-description">تم حظر SteamID: 110000112345678 بسبب الغش</div>
+                            <div class="action-meta">
+                                <span class="action-admin">بواسطة: admin</span>
+                                <span class="action-time">منذ 2 ساعة</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-item">
+                        <div class="action-icon">
+                            <i class="fas fa-door-open text-warning"></i>
+                        </div>
+                        <div class="action-details">
+                            <div class="action-title">تم طرد اللاعب</div>
+                            <div class="action-description">تم طرد PlayerName بسبب السلوك غير اللائق</div>
+                            <div class="action-meta">
+                                <span class="action-admin">بواسطة: moderator</span>
+                                <span class="action-time">منذ 5 ساعات</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server Tab -->
+            <div class="tab-content" id="serverTab" style="display: none;">
+                <div class="tab-header">
+                    <h3><i class="fas fa-server"></i> إحصائيات الخادم</h3>
+                </div>
+                
+                <div class="server-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statsTotalPlayers">0</div>
+                            <div class="stat-label">إجمالي اللاعبين</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statsActivePlayers">0</div>
+                            <div class="stat-label">لاعبين نشطين</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-ban"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statsBannedPlayers">0</div>
+                            <div class="stat-label">لاعبين محظورين</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statsRecentActions">0</div>
+                            <div class="stat-label">إجراءات حديثة</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statsTotalWarnings">0</div>
+                            <div class="stat-label">تحذيرات نشطة</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="statsAvgSession">0</div>
+                            <div class="stat-label">متوسط الوقت</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-content" id="settingsTab" style="display: none;">
+                <div class="tab-header">
+                    <h3><i class="fas fa-cog"></i> إعدادات الإدارة</h3>
+                </div>
+                
+                <div class="settings-grid">
+                    <div class="setting-item">
+                        <label class="setting-label">المظهر:</label>
+                        <select class="setting-select">
+                            <option value="default">افتراضي</option>
+                            <option value="dark">داكن</option>
+                            <option value="light">فاتح</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">اللغة:</label>
+                        <select class="setting-select">
+                            <option value="ar">العربية</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">التنبيهات:</label>
+                        <div class="setting-switch">
+                            <input type="checkbox" id="notificationsToggle" checked>
+                            <label for="notificationsToggle" class="switch-label"></label>
+                        </div>
+                    </div>
+
+                    <div class="setting-item">
+                        <label class="setting-label">الصوت:</label>
+                        <div class="setting-switch">
+                            <input type="checkbox" id="soundToggle" checked>
+                            <label for="soundToggle" class="switch-label"></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <!-- Player Info Modal -->
+        <div id="playerInfoModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>معلومات اللاعب</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div class="player-info-details">
+                        <div class="info-row">
+                            <span class="info-label">الاسم:</span>
+                            <span class="info-value" id="playerInfoName">N/A</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">ID:</span>
+                            <span class="info-value" id="playerInfoId">N/A</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Steam:</span>
+                            <span class="info-value" id="playerInfoSteam">N/A</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">License:</span>
+                            <span class="info-value" id="playerInfoLicense">N/A</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Discord:</span>
+                            <span class="info-value" id="playerInfoDiscord">N/A</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">IP:</span>
+                            <span class="info-value" id="playerInfoIp">N/A</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Ping:</span>
+                            <span class="info-value" id="playerInfoPing">N/A</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Job:</span>
+                            <span class="info-value" id="playerInfoJob">N/A</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Cash:</span>
+                            <span class="info-value" id="playerInfoCash">$0</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Bank:</span>
+                            <span class="info-value" id="playerInfoBank">$0</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Inventory:</span>
+                            <ul class="info-value" id="playerInfoInventory">
+                                <li>No items</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warn Modal -->
+        <div id="warnModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>تحذير لاعب</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>تحذير اللاعب: <strong id="warnPlayerName">N/A</strong></p>
+                    <form id="warnForm" class="admin-form">
+                        <div class="form-group">
+                            <label for="warnReason">سبب التحذير:</label>
+                            <textarea id="warnReason" name="reason" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="warnSeverity">شدة التحذير:</label>
+                            <select id="warnSeverity" name="severity">
+                                <option value="low">منخفض</option>
+                                <option value="medium" selected>متوسط</option>
+                                <option value="high">عالٍ</option>
+                            </select>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-warning">إرسال التحذير</button>
+                            <button type="button" class="btn btn-secondary" onclick="adminApp.closeModal('warnModal')">إلغاء</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kick Modal -->
+        <div id="kickModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>طرد لاعب</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>طرد اللاعب: <strong id="kickPlayerName">N/A</strong></p>
+                    <form id="kickForm" class="admin-form">
+                        <div class="form-group">
+                            <label for="kickReason">سبب الطرد:</label>
+                            <select id="kickReason" name="reason">
+                                <option value="">اختر سبباً...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="kickCustomReason">أو اكتب سبباً مخصصاً:</label>
+                            <input type="text" id="kickCustomReason" name="customReason">
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-danger">طرد اللاعب</button>
+                            <button type="button" class="btn btn-secondary" onclick="adminApp.closeModal('kickModal')">إلغاء</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ban Modal -->
+        <div id="banModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>حظر لاعب</h3>
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>حظر اللاعب: <strong id="banPlayerName">N/A</strong></p>
+                    <form id="banForm" class="admin-form">
+                        <div class="form-group">
+                            <label for="banReason">سبب الحظر:</label>
+                            <select id="banReason" name="reason">
+                                <option value="">اختر سبباً...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="banCustomReason">أو اكتب سبباً مخصصاً:</label>
+                            <input type="text" id="banCustomReason" name="customReason">
+                        </div>
+                        <div class="form-group">
+                            <label for="banDuration">مدة الحظر (أيام):</label>
+                            <input type="number" id="banDuration" name="duration" min="1" value="7" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-danger">حظر اللاعب</button>
+                            <button type="button" class="btn btn-secondary" onclick="adminApp.closeModal('banModal')">إلغاء</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Container -->
+        <div id="notifications" class="notifications-container"></div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>جاري التحميل...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

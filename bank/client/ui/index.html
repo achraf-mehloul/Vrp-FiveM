@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="bankContainer" class="bank-container">
+        <!-- Header -->
+        <div class="bank-header">
+            <div class="bank-logo">
+                <i class="fas fa-university"></i>
+                <h1>النظام البنكي</h1>
+            </div>
+            <button id="closeBank" class="close-btn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="bank-content">
+            <!-- Account Overview -->
+            <div class="account-overview">
+                <div class="account-info">
+                    <div class="account-number">
+                        <span class="label">رقم الحساب:</span>
+                        <span id="accountNumber" class="value">00000000</span>
+                    </div>
+                    <div class="account-balance">
+                        <span class="label">الرصيد:</span>
+                        <span id="accountBalance" class="value balance-display">$0.00</span>
+                    </div>
+                    <div class="account-details">
+                        <div class="detail">
+                            <span class="label">نوع الحساب:</span>
+                            <span id="accountType" class="value">شخصي</span>
+                        </div>
+                        <div class="detail">
+                            <span class="label">مفتوح منذ:</span>
+                            <span id="accountSince" class="value">2024/01/01</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <div class="bank-tabs">
+                <button class="tab-btn active" data-tab="main">
+                    <i class="fas fa-home"></i>
+                    الرئيسية
+                </button>
+                <button class="tab-btn" data-tab="transfer">
+                    <i class="fas fa-exchange-alt"></i>
+                    تحويل
+                </button>
+                <button class="tab-btn" data-tab="deposit">
+                    <i class="fas fa-plus-circle"></i>
+                    إيداع
+                </button>
+                <button class="tab-btn" data-tab="withdraw">
+                    <i class="fas fa-minus-circle"></i>
+                    سحب
+                </button>
+                <button class="tab-btn" data-tab="history">
+                    <i class="fas fa-history"></i>
+                    السجل
+                </button>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="tab-content" id="mainTab">
+                <div class="quick-actions">
+                    <h3>إجراءات سريعة</h3>
+                    <div class="action-grid">
+                        <button class="action-btn" onclick="bankApp.switchTab('transfer')">
+                            <i class="fas fa-exchange-alt"></i>
+                            تحويل الأموال
+                        </button>
+                        <button class="action-btn" onclick="bankApp.switchTab('deposit')">
+                            <i class="fas fa-plus-circle"></i>
+                            إيداع نقدي
+                        </button>
+                        <button class="action-btn" onclick="bankApp.switchTab('withdraw')">
+                            <i class="fas fa-minus-circle"></i>
+                            سحب نقدي
+                        </button>
+                        <button class="action-btn" onclick="bankApp.switchTab('history')">
+                            <i class="fas fa-history"></i>
+                            عرض السجل
+                        </button>
+                    </div>
+                </div>
+
+                <div class="recent-transactions">
+                    <h3>آخر المعاملات</h3>
+                    <div id="recentTransactionsList" class="transactions-list">
+                        <!-- Transactions will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Transfer Tab -->
+            <div class="tab-content" id="transferTab" style="display: none;">
+                <div class="tab-header">
+                    <h3><i class="fas fa-exchange-alt"></i> تحويل الأموال</h3>
+                </div>
+                
+                <form id="transferForm" class="bank-form">
+                    <div class="form-group">
+                        <label for="targetAccount">رقم الحساب المستلم:</label>
+                        <input type="text" id="targetAccount" name="targetAccount" 
+                               placeholder="أدخل رقم الحساب" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transferAmount">المبلغ:</label>
+                        <input type="number" id="transferAmount" name="amount" 
+                               placeholder="0.00" min="1" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transferDescription">الوصف (اختياري):</label>
+                        <textarea id="transferDescription" name="description" 
+                                  placeholder="وصف التحويل"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            تحويل
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="bankApp.switchTab('main')">
+                            إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Deposit Tab -->
+            <div class="tab-content" id="depositTab" style="display: none;">
+                <div class="tab-header">
+                    <h3><i class="fas fa-plus-circle"></i> إيداع نقدي</h3>
+                </div>
+                
+                <form id="depositForm" class="bank-form">
+                    <div class="form-group">
+                        <label for="depositAmount">المبلغ للإيداع:</label>
+                        <input type="number" id="depositAmount" name="amount" 
+                               placeholder="0.00" min="1" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="depositDescription">الوصف (اختياري):</label>
+                        <textarea id="depositDescription" name="description" 
+                                  placeholder="وصف الإيداع"></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-check-circle"></i>
+                            إيداع
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="bankApp.switchTab('main')">
+                            إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Withdraw Tab -->
+            <div class="tab-content" id="withdrawTab" style="display: none;">
+                <div class="tab-header">
+                    <h3><i class="fas fa-minus-circle"></i> سحب نقدي</h3>
+                </div>
+                
+                <form id="withdrawForm" class="bank-form">
+                    <div class="form-group">
+                        <label for="withdrawAmount">المبلغ للسحب:</label>
+                        <input type="number" id="withdrawAmount" name="amount" 
+                               placeholder="0.00" min="1" step="0.01" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="withdrawDescription">الوصف (اختياري):</label>
+                        <textarea id="withdrawDescription" name="description" 
+                                  placeholder="وصف السحب"></textarea>
+                    </div>
+
+                    <div class="current-balance">
+                        <span>الرصيد المتاح: <strong id="availableBalance" class="balance-display">$0.00</strong></span>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-money-bill-wave"></i>
+                            سحب
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="bankApp.switchTab('main')">
+                            إلغاء
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- History Tab -->
+            <div class="tab-content" id="historyTab" style="display: none;">
+                <div class="tab-header">
+                    <h3><i class="fas fa-history"></i> سجل المعاملات</h3>
+                </div>
+                
+                <div class="transactions-container">
+                    <div id="transactionsList" class="transactions-list">
+                        <!-- Transactions will be populated here -->
+                    </div>
+                    
+                    <button id="loadMoreTransactions" class="btn btn-outline">
+                        <i class="fas fa-chevron-down"></i>
+                        تحميل المزيد
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notifications Container -->
+        <div id="notifications" class="notifications-container"></div>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>جاري المعالجة...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

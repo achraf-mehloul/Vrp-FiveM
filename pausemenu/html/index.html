@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+    <title>قائمة الباوس</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="pausemenu" class="hidden">
+        <div class="menu-container">
+            <!-- العنوان -->
+            <div class="menu-title">
+                <img id="server-logo" src="assets/logo.png" alt="Server Logo" class="logo-img">
+                <div class="menu-title-text" id="server-name">Melix Files V1</div>
+                <div class="menu-subtitle">نظام القائمة المتقدمة</div>
+            </div>
+
+            <!-- الإحصائيات -->
+            <div class="stats-section">
+                <div class="stat-box">
+                    <div class="stat-content">
+                        <i class="fas fa-user stat-icon"></i>
+                        <div class="stat-info">
+                            <div class="stat-value" id="player-count">0</div>
+                            <div class="stat-label">اللاعبين المتصلين</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-content">
+                        <i class="fas fa-id-card stat-icon"></i>
+                        <div class="stat-info">
+                            <div class="stat-value" id="player-id">0</div>
+                            <div class="stat-label">رقم اللاعب</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-content">
+                        <i class="fas fa-clock stat-icon"></i>
+                        <div class="stat-info">
+                            <div class="stat-value" id="play-time">0:00:00</div>
+                            <div class="stat-label">وقت اللعب</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-content">
+                        <i class="fas fa-user-tag stat-icon"></i>
+                        <div class="stat-info">
+                            <div class="stat-value" id="player-name">Player</div>
+                            <div class="stat-label">اسم اللاعب</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الأزرار -->
+            <div class="menu-buttons">
+                <button class="menu-button" onclick="handleButton('resume')">
+                    <i class="fas fa-play"></i>
+                    العودة للعبة
+                </button>
+                <button class="menu-button" onclick="handleButton('map')">
+                    <i class="fas fa-map"></i>
+                    الخريطة
+                </button>
+                <button class="menu-button" onclick="handleButton('settings')">
+                    <i class="fas fa-cog"></i>
+                    الإعدادات
+                </button>
+                <button class="menu-button" onclick="handleButton('shortcuts')">
+                    <i class="fas fa-keyboard"></i>
+                    الاختصارات
+                </button>
+                <button class="menu-button" onclick="handleButton('frameworks')">
+                    <i class="fas fa-layer-group"></i>
+                    الفريمات
+                </button>
+                <button class="menu-button exit" onclick="handleButton('exit')">
+                    <i class="fas fa-sign-out-alt"></i>
+                    خروج
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

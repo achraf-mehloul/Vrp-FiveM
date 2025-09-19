@@ -1,0 +1,14 @@
+{
+    "menu_title": "Pause Menu",
+    "resume_game": "Resume Game",
+    "map": "Map",
+    "settings": "Settings",
+    "shortcuts": "Shortcuts",
+    "frameworks": "Frameworks",
+    "exit": "Exit",
+    "player_id": "Player ID",
+    "online_players": "Online Players",
+    "play_time": "Play Time",
+    "player_name": "Player Name",
+    "server_name": "Server Name"
+}

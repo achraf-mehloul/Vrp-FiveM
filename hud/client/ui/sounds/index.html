@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="نظام HUD متقدم للعبة FiveM مع واجهة قابلة للتخصيص بالكامل">
+    <meta name="keywords" content="HUD, FiveM, GTA, واجهة, لعبة, إحصائيات">
+    <meta name="author" content="Expert Development Team">
+    <meta name="theme-color" content="#2c3e50">
+    <title>HUD</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- شاشة التحميل -->
+    <div id="hud-loader" aria-live="polite">جار تحميل واجهة اللاعب...</div>
+    
+    <!-- الحاوية الرئيسية -->
+    <main id="hud-container" class="visible" aria-label="لوحة معلومات اللاعب">
+        <!-- شريط الحالة -->
+        <section class="status-bar" aria-label="إحصائيات الحالة">
+            <div class="health-bar">
+                <i class="fas fa-heart icon" aria-hidden="true" title="الصحة"></i>
+                <span id="health-value" aria-live="polite">100</span>
+                <span class="sr-only">نقطة</span>
+            </div>
+            <div class="armor-bar">
+                <i class="fas fa-shield-alt icon" aria-hidden="true" title="الدروع"></i>
+                <span id="armor-value" aria-live="polite">50</span>
+                <span class="sr-only">نقطة</span>
+            </div>
+            <div class="hunger-bar">
+                <i class="fas fa-utensils icon" aria-hidden="true" title="الجوع"></i>
+                <span id="hunger-value" aria-live="polite">80</span>
+                <span class="sr-only">نقطة</span>
+            </div>
+            <div class="thirst-bar">
+                <i class="fas fa-tint icon" aria-hidden="true" title="العطش"></i>
+                <span id="thirst-value" aria-live="polite">70</span>
+                <span class="sr-only">نقطة</span>
+            </div>
+        </section>
+
+        <!-- المعلومات المالية والمهنية -->
+        <section class="info-bar" aria-label="المعلومات المالية والمهنية">
+            <div class="cash">
+                <i class="fas fa-money-bill-wave icon" aria-hidden="true" title="النقود"></i>
+                <span id="cash-value" aria-live="polite">5,000</span>
+                <span class="sr-only">دولار</span>
+            </div>
+            <div class="bank">
+                <i class="fas fa-university icon" aria-hidden="true" title="البنك"></i>
+                <span id="bank-value" aria-live="polite">15,000</span>
+                <span class="sr-only">دولار</span>
+            </div>
+            <div class="job">
+                <i class="fas fa-briefcase icon" aria-hidden="true" title="الوظيفة"></i>
+                <span id="job-value" aria-live="polite">شرطي</span>
+            </div>
+            <div class="rank">
+                <i class="fas fa-star icon" aria-hidden="true" title="الرتبة"></i>
+                <span id="rank-value" aria-live="polite">رقيب</span>
+            </div>
+        </section>
+
+        <!-- الحالات الخاصة -->
+        <section class="state-bar" aria-label="حالات خاصة">
+            <div id="wanted-level" class="state hidden">
+                <i class="fas fa-exclamation-triangle icon" aria-hidden="true" title="مستوى المطلوبية"></i>
+                <span id="wanted-value">0</span>
+                <span class="sr-only">نجوم</span>
+            </div>
+            <div id="combat-state" class="state hidden">
+                <i class="fas fa-fist-raised icon" aria-hidden="true" title="حالة القتال"></i>
+                <span>في قتال</span>
+            </div>
+            <div id="hud-clock" class="clock" aria-live="polite" aria-label="الوقت الحالي"></div>
+            <div id="fps-counter" class="fps-counter" style="display: none;" aria-live="polite">FPS: 0</div>
+        </section>
+
+        <!-- زر الإعدادات -->
+        <footer class="settings-button">
+            <button id="settings-toggle" aria-label="فتح إعدادات HUD" title="إعدادات HUD">
+                <i class="fas fa-cog" aria-hidden="true"></i>
+            </button>
+        </footer>
+
+        <!-- لوحة الإعدادات -->
+        <aside id="settings-panel" class="hidden" aria-label="لوحة إعدادات HUD" aria-hidden="true">
+            <h3>إعدادات HUD</h3>
+            <div class="setting-group">
+                <label for="theme-select">المظهر:</label>
+                <select id="theme-select">
+                    <option value="dark">داكن</option>
+                    <option value="light">فاتح</option>
+                    <option value="blue">أزرق</option>
+                    <option value="green">أخضر</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label for="font-size-select">حجم الخط:</label>
+                <select id="font-size-select">
+                    <option value="small">صغير</option>
+                    <option value="medium" selected>متوسط</option>
+                    <option value="large">كبير</option>
+                    <option value="x-large">كبير جدًا</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label for="opacity-slider">الشفافية: 
+                    <output id="opacity-value">80%</output>
+                </label>
+                <input type="range" id="opacity-slider" min="0.3" max="1" step="0.1" value="0.8" aria-valuetext="80%">
+            </div>
+            <div class="setting-group">
+                <label for="layout-select">وضع العرض:</label>
+                <select id="layout-select">
+                    <option value="normal">عادي</option>
+                    <option value="compact">مضغوط</option>
+                    <option value="minimal">بسيط</option>
+                </select>
+            </div>
+            <div class="setting-group">
+                <label for="accessibility-select">خيارات الوصول:</label>
+                <select id="accessibility-select">
+                    <option value="normal">عادي</option>
+                    <option value="high-contrast">تباين عالي</option>
+                    <option value="large-text">نص كبير</option>
+                </select>
+            </div>
+            <div class="button-group">
+                <button id="reset-position" class="btn-secondary">إعادة التعيين</button>
+                <button id="close-settings">إغلاق</button>
+            </div>
+        </aside>
+    </main>
+
+    <!-- إشعارات -->
+    <div id="notifications-container" aria-live="assertive"></div>
+
+    <!-- صوت التحذير -->
+    <audio id="hud-warning-sound" preload="auto" aria-label="صوت تحذير">
+        <source src="sounds/warning.mp3" type="audio/mpeg">
+        <source src="sounds/warning.ogg" type="audio/ogg">
+        <track kind="captions" src="sounds/captions.vtt" srclang="ar" label="Arabic">
+        <p>المتصفح الخاص بك لا يدعم تشغيل عنصر الصوت.</p>
+    </audio>
+    
+    <script src="app.js"></script>
+
+    <script src="api.js"></script>
+</body>
+</html>

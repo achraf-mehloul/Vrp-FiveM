@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام الأبطال الخارقين</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        body {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            overflow: hidden;
+        }
+
+        .heroes-container {
+            padding: 20px;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            border-radius: 15px;
+            margin: 20px;
+            border: 2px solid gold;
+        }
+
+        .hero-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 1px solid #00b4d8;
+            transition: all 0.3s;
+        }
+
+        .hero-card:hover {
+            transform: scale(1.02);
+            border-color: gold;
+        }
+    </style>
+</head>
+<body>
+    <div class="heroes-container">
+        <h1>الأبطال الخارقين</h1>
+        <div id="heroes-list"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

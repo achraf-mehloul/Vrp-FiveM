@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HUD</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="hud-container">
+    <!-- شريط الحالة -->
+    <div class="status-bars">
+      <div class="bar health">
+        <span class="icon">❤️</span>
+        <div class="fill" id="health-bar"></div>
+      </div>
+      <div class="bar armor">
+        <span class="icon">🛡️</span>
+        <div class="fill" id="armor-bar"></div>
+      </div>
+      <div class="bar hunger">
+        <span class="icon">🍔</span>
+        <div class="fill" id="hunger-bar"></div>
+      </div>
+      <div class="bar thirst">
+        <span class="icon">💧</span>
+        <div class="fill" id="thirst-bar"></div>
+      </div>
+    </div>
+
+    <!-- معلومات اللاعب -->
+    <div class="player-info">
+      <div class="info-box">
+        <span>💰</span>
+        <p id="cash">$5,000</p>
+      </div>
+      <div class="info-box">
+        <span>🏦</span>
+        <p id="bank">$20,000</p>
+      </div>
+    </div>
+
+    <!-- إعدادات HUD -->
+    <div class="hud-settings hidden" id="hud-settings">
+      <h2>إعدادات HUD</h2>
+      <label>
+        <input type="checkbox" id="toggle-health" checked /> عرض الصحة
+      </label>
+      <label>
+        <input type="checkbox" id="toggle-armor" checked /> عرض الدرع
+      </label>
+      <label>
+        <input type="checkbox" id="toggle-hunger" checked /> عرض الجوع
+      </label>
+      <label>
+        <input type="checkbox" id="toggle-thirst" checked /> عرض العطش
+      </label>
+      <button id="close-settings">إغلاق</button>
+    </div>
+
+    <!-- زر الإعدادات -->
+    <button class="settings-btn" id="open-settings">⚙️</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

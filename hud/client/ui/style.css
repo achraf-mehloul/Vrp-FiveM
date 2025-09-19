@@ -1,0 +1,119 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Tajawal", sans-serif;
+  background: transparent;
+  color: #fff;
+  user-select: none;
+}
+
+.hud-container {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* شريط الحالة */
+.status-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.bar {
+  display: flex;
+  align-items: center;
+  background: rgba(13, 27, 42, 0.6);
+  border: 2px solid #4cc9f0;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 220px;
+  height: 28px;
+}
+.bar .icon {
+  margin: 0 8px;
+  font-size: 18px;
+}
+.bar .fill {
+  height: 100%;
+  width: 50%;
+  transition: width 0.3s ease;
+}
+.health .fill { background: #ff4d6d; }
+.armor .fill { background: #00b4d8; }
+.hunger .fill { background: #f77f00; }
+.thirst .fill { background: #90e0ef; }
+
+/* معلومات اللاعب */
+.player-info {
+  display: flex;
+  gap: 15px;
+}
+.info-box {
+  background: rgba(13, 27, 42, 0.7);
+  border: 2px solid #4cc9f0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+}
+
+/* إعدادات HUD */
+.hud-settings {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(13, 27, 42, 0.95);
+  border: 2px solid #4cc9f0;
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+}
+.hud-settings.hidden {
+  display: none;
+}
+.hud-settings h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.hud-settings label {
+  display: block;
+  margin: 10px 0;
+  font-size: 16px;
+}
+.hud-settings button {
+  margin-top: 15px;
+  background: #4cc9f0;
+  color: #000;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.hud-settings button:hover {
+  background: #3fb1d8;
+}
+
+/* زر الإعدادات */
+.settings-btn {
+  background: #4cc9f0;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 20px;
+  align-self: flex-end;
+  transition: background 0.3s ease;
+}
+.settings-btn:hover {
+  background: #3fb1d8;
+}

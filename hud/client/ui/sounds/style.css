@@ -1,0 +1,1000 @@
+/**
+ * HUD System Stylesheet
+ * 
+ * نظام واجهة الرأس (HUD) متقدم ومتجاوب مع إمكانية التخصيص الكامل.
+ * يدعم السمات المختلفة، أوضاع الوصولية، والرسوم المتحركة الدقيقة.
+ * 
+ * @version 1.2.1
+ * @author Expert Developer
+ */
+
+/* ==========================================================================
+   CSS Custom Properties (Variables) for theming and consistency
+   ========================================================================== */
+   :root {
+    /* Typography */
+    --hud-font-size: 14px;
+    --hud-font-family: 'Cairo', sans-serif;
+    --hud-line-height: 1.6;
+    
+    /* Color Palette - Primary */
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --text-color: #ecf0f1;
+    
+    /* Color Palette - Status Indicators */
+    --danger-color: #e74c3c;
+    --warning-color: #f39c12;
+    --success-color: #2ecc71;
+    --info-color: #3498db;
+    
+    /* UI Properties */
+    --border-radius: 8px;
+    --transition-speed: 0.3s;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    --backdrop-blur: blur(10px);
+    
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 0.75rem;
+    --spacing-lg: 1rem;
+    --spacing-xl: 1.25rem;
+}
+
+/* ==========================================================================
+   Reset and Base Styles
+   ========================================================================== */
+
+/**
+ * CSS Reset for consistent cross-browser styling
+ * Removes default margins, paddings, and ensures border-box sizing
+ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/**
+ * Focus styles for accessibility
+ * Provides visible focus indicator for keyboard navigation
+ */
+*:focus {
+    outline: 2px solid var(--info-color);
+    outline-offset: 2px;
+}
+
+/**
+ * Base body styles
+ * Uses transparent background for overlay on game scenes
+ */
+ body {
+    overflow: hidden;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: var(--hud-font-family);
+    line-height: var(--hud-line-height);
+}
+
+/**
+ * Screen Reader Only utility class
+ * Hides element visually but keeps it accessible to screen readers
+ */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ==========================================================================
+   Loader Component
+   Shows during HUD initialization
+   ========================================================================== */
+#hud-loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--text-color);
+    font-size: 1.125rem;
+    background: rgba(0, 0, 0, 0.8);
+    padding: var(--spacing-lg) 1.5rem;
+    border-radius: var(--border-radius);
+    z-index: 10000;
+    animation: fadeInOut 1.5s ease-in-out infinite;
+    backdrop-filter: var(--backdrop-blur);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================================================
+   Animation Keyframes
+   Reusable animations for various UI states
+   ========================================================================== */
+
+/**
+ * Pulsing animation for loading states
+ */
+@keyframes fadeInOut {
+    0%, 100% { 
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+    50% { 
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+/**
+ * Pulse animation for critical states (low health, etc.)
+ */
+@keyframes pulse {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 0.7;
+        transform: scale(1.05);
+    }
+}
+
+/**
+ * Specific pulse for hunger indicator
+ * Color transition from warning to danger state
+ */
+@keyframes hungerPulse {
+    0%, 100% { 
+        color: #ffa726;
+        transform: scale(1);
+    }
+    50% { 
+        color: #ff0000;
+        transform: scale(1.1);
+    }
+}
+
+/**
+ * Specific pulse for thirst indicator
+ * Color transition from info to primary blue
+ */
+@keyframes thirstPulse {
+    0%, 100% { 
+        color: #42a5f5;
+        transform: scale(1);
+    }
+    50% { 
+        color: #0066cc;
+        transform: scale(1.1);
+    }
+}
+
+/**
+ * Combat state pulse - rapid pulsing for urgency
+ */
+@keyframes combatPulse {
+    0%, 100% { 
+        color: #ef5350;
+        transform: scale(1);
+    }
+    50% { 
+        color: #ff0000;
+        transform: scale(1.05);
+    }
+}
+
+/**
+ * Smooth theme transition animation
+ */
+@keyframes themeTransition {
+    from { 
+        opacity: 0.7;
+        transform: scale(0.95) translateY(-0.5rem);
+    }
+    to { 
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/**
+ * Cash update animation - green highlight pulse
+ */
+@keyframes cashUpdate {
+    0% { 
+        transform: scale(1);
+        background: rgba(102, 187, 106, 0.1);
+    }
+    50% { 
+        transform: scale(1.1);
+        background: rgba(102, 187, 106, 0.3);
+    }
+    100% { 
+        transform: scale(1);
+        background: rgba(102, 187, 106, 0.1);
+    }
+}
+
+/**
+ * Bank update animation - teal highlight pulse
+ */
+@keyframes bankUpdate {
+    0% { 
+        transform: scale(1);
+        background: rgba(38, 166, 154, 0.1);
+    }
+    50% { 
+        transform: scale(1.1);
+        background: rgba(38, 166, 154, 0.3);
+    }
+    100% { 
+        transform: scale(1);
+        background: rgba(38, 166, 154, 0.1);
+    }
+}
+
+/**
+ * Wanted level pulse - orange to red transition
+ */
+@keyframes wantedPulse {
+    0% { 
+        color: #ff7043;
+        transform: scale(1);
+    }
+    50% { 
+        color: #ff0000;
+        transform: scale(1.05);
+    }
+    100% { 
+        color: #ff7043;
+        transform: scale(1);
+    }
+}
+
+/**
+ * Notification slide-in animation
+ */
+@keyframes notificationSlide {
+    from {
+        transform: translateX(100%);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/**
+ * Notification fade-out animation
+ */
+@keyframes notificationFadeOut {
+    to {
+        opacity: 1;
+        transform: translateX(100%);
+    }
+}
+
+/* ==========================================================================
+   Main HUD Container
+   Primary container for all HUD elements
+   ========================================================================== */
+   #hud-container {
+    position: absolute;
+    top: var(--spacing-xl);
+    left: var(--spacing-xl);
+    color: var(--text-color);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+    font-size: var(--hud-font-size);
+    opacity: 1;
+    transition: all var(--transition-speed) ease-in-out;
+    z-index: 9999;
+    min-width: 280px;
+}
+
+/* Visibility states */
+#hud-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#hud-container.hidden {
+    opacity: 1;
+    transform: translateY(-1.25rem);
+    pointer-events: auto;
+}
+
+/* ==========================================================================
+   HUD Section Components
+   Reusable section styles for status, info, and state bars
+   ========================================================================== */
+
+/**
+ * Base section style with glassmorphism effect
+ */
+.hud-bar {
+    display: flex;
+    gap: 0.9375rem;
+    margin-bottom: 0.625rem;
+    background: rgba(0, 0, 0, 0.6);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    backdrop-filter: var(--backdrop-blur);
+    transition: all var(--transition-speed) ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* تطبيق نمط hud-bar على جميع أنواع البارات */
+.status-bar,
+.info-bar,
+.state-bar {
+    display: flex;
+    gap: 0.9375rem;
+    margin-bottom: 0.625rem;
+    background: rgba(0, 0, 0, 0.6);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    backdrop-filter: var(--backdrop-blur);
+    transition: all var(--transition-speed) ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-bar {
+    flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   Stat Item Components
+   Individual statistic display items with color coding
+   ========================================================================== */
+
+/**
+ * Base stat item style with consistent spacing and transitions
+ */
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3125rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: calc(var(--border-radius) - 2px);
+    transition: all 0.2s ease;
+}
+
+/* تطبيق نمط stat-item على جميع أنواع الإحصائيات */
+.health-bar,
+.armor-bar,
+.hunger-bar,
+.thirst-bar,
+.cash,
+.bank,
+.job,
+.rank,
+.state {
+    display: flex;
+    align-items: center;
+    gap: 0.3125rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: calc(var(--border-radius) - 2px);
+    transition: all 0.2s ease;
+}
+
+/* Icon styling with hover effects */
+.icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+    transition: transform 0.2s ease;
+}
+
+.health-bar:hover .icon,
+.armor-bar:hover .icon,
+.hunger-bar:hover .icon,
+.thirst-bar:hover .icon {
+    transform: scale(1.1);
+}
+
+/* ==========================================================================
+   Color Themes for Stats
+   Semantic color coding for different statistic types
+   ========================================================================== */
+
+/* Health - Red spectrum for critical information */
+.health-bar { 
+    color: #ff5252; 
+    background: rgba(255, 82, 82, 0.1);
+}
+
+/* Armor - Blue spectrum for protection metrics */
+.armor-bar { 
+    color: #29b6f6; 
+    background: rgba(41, 182, 246, 0.1);
+}
+
+/* Hunger - Orange spectrum for sustenance */
+.hunger-bar { 
+    color: #ffa726; 
+    background: rgba(255, 167, 38, 0.1);
+}
+
+/* Thirst - Blue spectrum for hydration */
+.thirst-bar { 
+    color: #42a5f5; 
+    background: rgba(66, 165, 245, 0.1);
+}
+
+/* Cash - Green spectrum for positive financials */
+.cash { 
+    color: #66bb6a; 
+    background: rgba(102, 187, 106, 0.1);
+}
+
+/* Bank - Teal spectrum for stored wealth */
+.bank { 
+    color: #26a69a; 
+    background: rgba(38, 166, 154, 0.1);
+}
+
+/* Job - Purple spectrum for profession */
+.job { 
+    color: #ab47bc; 
+    background: rgba(171, 71, 188, 0.1);
+}
+
+/* Rank - Yellow spectrum for status/achievement */
+.rank { 
+    color: #ffee58; 
+    background: rgba(255, 238, 88, 0.1);
+}
+
+/* Wanted level - Orange/red for danger state */
+#wanted-level { 
+    color: #ff7043; 
+    background: rgba(255, 112, 67, 0.15);
+}
+
+/* Combat state - Red for active combat */
+#combat-state { 
+    color: #ef5350; 
+    background: rgba(239, 83, 80, 0.15);
+}
+
+/* ==========================================================================
+   State Management
+   Visibility and state indicator styles
+   ========================================================================== */
+
+/* إخفاء آمن لعناصر HUD فقط */
+/* إخفاء لوحة الإعدادات والحالات الخاصة */
+#settings-panel.hidden,
+.state.hidden {
+    display: none !important;
+}
+
+/* إظهار لوحة الإعدادات كي تنحى .hidden */
+#settings-panel:not(.hidden) {
+    display: block !important;
+}
+
+
+/* ==========================================================================
+   Animation Classes
+   Utility classes for applying specific animations
+   ========================================================================== */
+
+.health-bar.low { 
+    animation: pulse 1s ease-in-out infinite;
+}
+
+.hunger-bar.low { 
+    animation: hungerPulse 1s ease-in-out infinite;
+}
+
+.thirst-bar.low { 
+    animation: thirstPulse 1s ease-in-out infinite;
+}
+
+#combat-state.combat-active {
+    animation: combatPulse 0.8s ease-in-out infinite;
+}
+
+#hud-container.theme-changing {
+    animation: themeTransition 0.5s ease forwards;
+}
+
+.cash.updated { 
+    animation: cashUpdate 0.5s ease;
+}
+
+.bank.updated { 
+    animation: bankUpdate 0.5s ease;
+}
+
+.wanted-updated { 
+    animation: wantedPulse 0.5s ease infinite;
+}
+
+/* ==========================================================================
+   Interaction States
+   Styles for different interaction modes
+   ========================================================================== */
+
+/* Dragging state for HUD repositioning */
+#hud-container.draggable {
+    cursor: move;
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+
+/* ==========================================================================
+   Theme Variants
+   Complete theme system with multiple color schemes
+   ========================================================================== */
+
+/* Light theme - for bright game environments */
+#hud-container.light-theme {
+    color: #2c3e50;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+#hud-container.light-theme .status-bar,
+#hud-container.light-theme .info-bar,
+#hud-container.light-theme .state-bar {
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Dark theme - default for most game scenarios */
+#hud-container.dark-theme {
+    color: #ecf0f1;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+#hud-container.dark-theme .status-bar,
+#hud-container.dark-theme .info-bar,
+#hud-container.dark-theme .state-bar {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Blue theme - aquatic or tech-oriented games */
+#hud-container.blue-theme {
+    color: #e1f5fe;
+}
+
+#hud-container.blue-theme .status-bar,
+#hud-container.blue-theme .info-bar,
+#hud-container.blue-theme .state-bar {
+    background: rgba(13, 71, 161, 0.7);
+    border: 1px solid rgba(100, 181, 246, 0.3);
+}
+
+/* Green theme - nature or stealth-oriented games */
+#hud-container.green-theme {
+    color: #e8f5e9;
+}
+
+#hud-container.green-theme .status-bar,
+#hud-container.green-theme .info-bar,
+#hud-container.green-theme .state-bar {
+    background: rgba(27, 94, 32, 0.7);
+    border: 1px solid rgba(129, 199, 132, 0.3);
+}
+
+/* ==========================================================================
+   Layout Variants
+   Different layout modes for various screen sizes and preferences
+   ========================================================================== */
+
+/* Compact layout - reduced spacing for smaller screens */
+#hud-container.compact .status-bar,
+#hud-container.compact .info-bar,
+#hud-container.compact .state-bar {
+    padding: 0.375rem 0.5rem;
+    font-size: calc(var(--hud-font-size) - 2px);
+    gap: 0.625rem;
+}
+
+#hud-container.compact .icon {
+    font-size: 0.875rem;
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+/* Minimal layout - transparent backgrounds for minimal intrusion */
+#hud-container.minimal .status-bar,
+#hud-container.minimal .info-bar,
+#hud-container.minimal .state-bar {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#hud-container.minimal .health-bar,
+#hud-container.minimal .armor-bar,
+#hud-container.minimal .hunger-bar,
+#hud-container.minimal .thirst-bar,
+#hud-container.minimal .cash,
+#hud-container.minimal .bank,
+#hud-container.minimal .job,
+#hud-container.minimal .rank,
+#hud-container.minimal .state {
+    background: transparent;
+}
+
+/* ==========================================================================
+   Settings Panel Component
+   User configuration interface for HUD customization
+   ========================================================================== */
+#settings-panel {
+    position: absolute;
+    top: 3.125rem;
+    right: 0;
+    background: rgba(0, 0, 0, 0.95);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius);
+    color: var(--text-color);
+    width: 280px;
+    z-index: 10000;
+    backdrop-filter: var(--backdrop-blur);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+    transform: translateY(-0.625rem);
+    transition: all var(--transition-speed) ease;
+}
+
+#settings-panel:not(.hidden) {
+    display: block !important;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+#settings-panel h3 {
+    margin-bottom: var(--spacing-lg);
+    color: var(--info-color);
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: var(--spacing-sm);
+}
+
+/* Settings toggle button with rotation effect */
+.settings-button {
+    position: absolute;
+    top: 0.2rem;  
+    left: var(--spacing-sm); 
+}
+
+.settings-button button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-color);
+    transition: all 0.2s ease;
+}
+
+.settings-button button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(45deg);
+}
+
+/* Setting group organization */
+.setting-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.setting-group label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    color: #bdc3c7;
+}
+
+.setting-group select, 
+.setting-group input {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    transition: all 0.2s ease;
+}
+
+.setting-group select {
+    background-color: rgba(44, 62, 80, 0.9);
+    color: #ecf0f1;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+
+.setting-group select:focus,
+.setting-group input:focus {
+    border-color: var(--info-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Button group for action buttons */
+.button-group {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-top: var(--spacing-lg);
+}
+
+
+#reset-position, 
+#close-settings {
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+#close-settings {
+    background: var(--info-color);
+    color: white;
+}
+
+#close-settings:hover {
+    background: #2980b9;
+}
+
+#reset-position {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-color);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#reset-position:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* ==========================================================================
+   Notification System
+   Toast-style notifications for user feedback
+   ========================================================================== */
+#notifications-container {
+    position: absolute;
+    top: 0.625rem;
+    right: 0.625rem;
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.notification {
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: var(--spacing-md) var(--spacing-lg);
+    border-radius: var(--border-radius);
+    animation: notificationSlide 0.3s ease;
+    max-width: 300px;
+    backdrop-filter: var(--backdrop-blur);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+}
+
+/* Notification variants with semantic coloring */
+.notification.success {
+    background: rgba(46, 125, 50, 0.9);
+    border-left: 4px solid #2e7d32;
+}
+
+.notification.error {
+    background: rgba(198, 40, 40, 0.9);
+    border-left: 4px solid #c62828;
+}
+
+.notification.info {
+    background: rgba(30, 136, 229, 0.9);
+    border-left: 4px solid #1e88e5;
+}
+
+.notification.warning {
+    background: rgba(237, 108, 2, 0.9);
+    border-left: 4px solid #ed6c02;
+}
+
+.notification.fade-out {
+    animation: notificationFadeOut 0.3s ease forwards;
+}
+
+/* ==========================================================================
+   Accessibility Features
+   Enhanced accessibility support for users with disabilities
+   ========================================================================== */
+
+/* Large text mode for visually impaired users */
+#hud-container.accessibility-large {
+    font-size: 18px !important;
+}
+
+#hud-container.accessibility-large .icon {
+    font-size: 20px !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+/* High contrast mode for better visibility */
+#hud-container.accessibility-high-contrast {
+    filter: contrast(1.5) brightness(1.2);
+}
+
+#hud-container.accessibility-high-contrast .status-bar,
+#hud-container.accessibility-high-contrast .info-bar,
+#hud-container.accessibility-high-contrast .state-bar {
+    background: rgba(0, 0, 0, 0.95) !important;
+    border: 2px solid #ffffff !important;
+}
+
+.accessibility-high-contrast {
+    --text-color: #ffffff !important;
+    --primary-color: #000000 !important;
+}
+
+/* Utility information displays */
+.clock, .fps-counter {
+    font-size: 0.875rem;
+    opacity: 0.8;
+    margin-left: auto;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+}
+
+.fps-counter {
+    background: rgba(52, 152, 219, 0.3);
+}
+
+/* ==========================================================================
+   Responsive Design System
+   Adaptive layouts for various screen sizes and resolutions
+   ========================================================================== */
+
+/* 4K and large displays */
+@media (min-width: 1920px) {
+    #hud-container {
+        top: 1.875rem;
+        left: 1.875rem;
+    }
+    :root {
+        --hud-font-size: 18px;
+    }
+    .icon {
+        font-size: 1.25rem;
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+}
+
+/* HD displays (1366x768) */
+@media (max-width: 1366px) {
+    #hud-container {
+        top: 0.9375rem;
+        left: 0.9375rem;
+    }
+    :root {
+        --hud-font-size: 13px;
+    }
+    .icon {
+        font-size: 0.875rem;
+        width: 0.875rem;
+        height: 0.875rem;
+    }
+}
+
+/* Tablet and small laptop displays */
+@media (max-width: 768px) { /* للأجهزة اللوحة */
+    #hud-container {
+        top: 0.625rem;
+        left: 0.625rem;
+        min-width: 250px;
+    }
+    :root {
+        --hud-font-size: 12px;
+    }
+    .status-bar, .info-bar, .state-bar {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-sm);
+    }
+    .icon {
+        font-size: 0.75rem;
+        width: 0.75rem;
+        height: 0.75rem;
+    }
+    #settings-panel {
+        width: 250px;
+        padding: var(--spacing-lg);
+    }
+    .notification {
+        max-width: 250px;
+        font-size: 0.875rem;
+    }
+}
+
+/* Mobile devices */
+@media (max-width: 480px) { /* للهواتف */
+    #hud-container {
+        top: 0.3125rem;
+        left: 0.3125rem;
+        min-width: 220px;
+    }
+    :root {
+        --hud-font-size: 11px;
+    }
+    .status-bar, .info-bar, .state-bar {
+        padding: 0.375rem;
+        gap: 0.375rem;
+    }
+    .icon {
+        font-size: 0.6875rem;
+        width: 0.6875rem;
+        height: 0.6875rem;
+    }
+    #settings-panel {
+        width: 220px;
+        right: -1rem;
+    }
+}
+
+/* ==========================================================================
+   Accessibility Media Queries
+   Support for user preference media features
+   ========================================================================== */
+
+/* Reduced motion for users with vestibular disorders */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    
+    #hud-container {
+        transition: none;
+    }
+}
+
+/* High contrast mode preference */
+/*
+@media (prefers-contrast: high) {
+    #hud-container {
+        filter: contrast(1.5);
+    }
+    
+    .status-bar,
+    .info-bar,
+    .state-bar {
+        border: 2px solid currentColor;
+    }
+}
+*/
+
+/* Dark mode preference */
+@media (prefers-color-scheme: dark) {
+    #hud-container:not(.light-theme) {
+        color: #ecf0f1;
+    }
+    
+    #hud-container:not(.light-theme) .status-bar,
+    #hud-container:not(.light-theme) .info-bar,
+    #hud-container:not(.light-theme) .state-bar {
+        background: rgba(0, 0, 0, 0.7);
+    }
+}

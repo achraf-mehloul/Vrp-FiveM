@@ -1,0 +1,23 @@
+.hero-card {
+    background: linear-gradient(145deg, #1e1e2d, #2d2d42);
+    border: 2px solid #00b4d8;
+    border-radius: 15px;
+    padding: 20px;
+    margin: 15px 0;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+}
+
+.hero-card:hover {
+    transform: translateY(-5px);
+    border-color: gold;
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+}
+
+.energy-bar {
+    height: 10px;
+    background: linear-gradient(90deg, #ff0080, #ff8c00);
+    border-radius: 10px;
+    margin: 10px 0;
+    transition: width 0.3s ease;
+}

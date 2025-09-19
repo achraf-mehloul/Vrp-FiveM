@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام HUD - FiveM</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+    body{background:linear-gradient(135deg,#0d1b2a 0%,#1b263b 100%);color:#fff;min-height:100vh;overflow:hidden;padding:20px;}
+    .hud-top{position:absolute;top:20px;right:20px;text-align:center;z-index:100;}
+    .logo{width:80px;height:80px;border-radius:50%;background:#111;border:3px solid #444;display:flex;align-items:center;justify-content:center;margin:0 auto;}
+    .logo span{font-size:36px;font-weight:bold;color:#FFD700;}
+    .title{margin-top:5px;background:rgba(20,20,20,0.8);border-radius:12px;padding:4px 12px;font-weight:bold;color:#FFD700;font-size:14px;}
+    .info{margin-top:8px;display:grid;grid-template-columns:1fr 1fr;gap:12px;justify-items:end;}
+    .box{position:relative;min-width:90px;background:rgba(20,20,20,0.85);padding:5px 12px;border-radius:50px;font-size:13px;font-weight:bold;text-align:right;}
+    .icon-circle{position:absolute;left:-28px;top:50%;transform:translateY(-50%);width:28px;height:28px;border-radius:50%;background:#333;display:flex;align-items:center;justify-content:center;}
+    .map-container{position:absolute;bottom:30px;left:30px;display:flex;flex-direction:column;align-items:center;gap:6px;z-index:100;}
+    .map{width:180px;height:180px;border-radius:50%;background:#222;border:3px solid #666;background-size:cover;}
+    .map.square{border-radius:12px;}
+    .status-bars{display:flex;gap:6px;}
+    .bar{width:30px;height:30px;border-radius:50%;background:#333;display:flex;align-items:center;justify-content:center;border:2px solid #444;font-size:12px;}
+    .settings-overlay{position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);z-index:999;display:none;}
+    .settings{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;max-width:95%;background:rgba(13,27,42,0.95);border:2px solid #4cc9f0;border-radius:12px;padding:20px;display:none;flex-direction:column;gap:20px;backdrop-filter:blur(10px);box-shadow:0 10px 25px rgba(0,0,0,0.5);z-index:1000;}
+    .settings-header{display:flex;justify-content:space-between;align-items:center;}
+    .settings-header h2{color:#FFD700;margin:0;}
+    .close-btn{padding:4px 10px;background:#e74c3c;border:none;border-radius:6px;color:#fff;cursor:pointer;font-weight:bold;}
+    .btn{padding:6px 14px;background:#4cc9f0;color:#000;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin:4px;}
+    .btn:hover{background:#37aadc;}
+    .dev-root{display:grid;grid-template-columns:1fr 420px;gap:18px;}
+    .panel{background:rgba(10,12,14,0.48);border:1px solid rgba(255,255,255,0.06);border-radius:10px;padding:18px;backdrop-filter:blur(8px);box-shadow:0 6px 28px rgba(0,0,0,0.55);}
+    .speed-card{width:320px;min-height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:16px;}
+    .speed-circle{width:230px;height:230px;border-radius:50%;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,0.03),rgba(0,0,0,0.45));border:6px solid rgba(255,255,255,0.04);position:relative;box-shadow:inset 0 -18px 36px rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;flex-direction:column;}
+    .speed-value{font-size:44px;font-weight:700;letter-spacing:1px;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.7);}
+    .speed-unit{font-size:12px;color:rgba(255,255,255,0.7);margin-top:4px;}
+    .fuel-ring{position:absolute;bottom:12px;left:12px;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;background:rgba(0,0,0,0.36);border:2px solid rgba(255,255,255,0.05);}
+    .colors-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+    .color-swatch{width:44px;height:20px;border-radius:6px;border:2px solid rgba(255,255,255,0.06);cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.45);}
+    .big-box{border:1px dashed rgba(255,255,255,0.06);border-radius:8px;padding:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.18));min-height:120px;}
+    .right-col{display:flex;flex-direction:column;gap:12px;}
+    .side-header{display:flex;gap:12px;align-items:center;justify-content:flex-start;}
+    .side-avatar{width:72px;height:72px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.03),rgba(0,0,0,0.35));display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;}
+    .side-list{display:flex;flex-direction:column;gap:8px;}
+    .side-item{display:flex;gap:10px;align-items:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.28);border:1px solid rgba(255,255,255,0.03);}
+    .side-item .label{flex:1;color:rgba(255,255,255,0.7);}
+    .phone-panel{position:relative;background:linear-gradient(180deg,rgba(0,0,0,0.78),rgba(0,0,0,0.64));padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.04);min-height:280px;}
+    .bottom-actions{display:flex;gap:10px;justify-content:center;margin-top:12px;}
+    .notify{background:rgba(0,0,0,0.72);padding:12px 16px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);margin-top:10px;}
+  </style>
+</head>
+<body>
+  <div class="hud-top">
+    <div class="logo"><span>M</span></div>
+    <div class="title">Melix Files V1</div>
+    <div class="info">
+      <div class="box">عاطل<div class="icon-circle"><i class="fas fa-briefcase"></i></div></div>
+      <div class="box">1<div class="icon-circle"><i class="fas fa-id-card"></i></div></div>
+      <div class="box">169,546$<div class="icon-circle"><i class="fas fa-university"></i></div></div>
+      <div class="box">0$<div class="icon-circle"><i class="fas fa-wallet"></i></div></div>
+    </div>
+  </div>
+
+  <div class="map-container">
+    <div id="map" class="map"></div>
+    <div class="status-bars">
+      <div class="bar" style="border-color:#e74c3c;"><i class="fas fa-heart"></i></div>
+      <div class="bar" style="border-color:#3498db;"><i class="fas fa-shield-alt"></i></div>
+      <div class="bar" style="border-color:#f1c40f;"><i class="fas fa-burger"></i></div>
+      <div class="bar" style="border-color:#1abc9c;"><i class="fas fa-tint"></i></div>
+      <div class="bar" style="border-color:#9b59b6;"><i class="fas fa-running"></i></div>
+    </div>
+  </div>
+
+  <div id="settingsOverlay" class="settings-overlay"></div>
+
+  <div id="settings" class="settings">
+    <div class="settings-header">
+      <h2>إعدادات الـ HUD</h2>
+      <button class="close-btn" onclick="toggleSettings()">إغلاق ✖</button>
+    </div>
+
+    <div class="dev-root">
+      <div class="left-col panel">
+        <div class="top-row">
+          <div style="flex:1">
+            <h2 style="margin:0 0 8px 0;font-size:20px">ضبط واجهة اللاعب — HUD</h2>
+            <div style="color:rgba(255,255,255,0.7);font-size:13px">إعدادات عامة، ألوان البارات، نوع الخريطة، إعدادات الظلال والـHUD</div>
+          </div>
+          <div style="width:220px;text-align:left">
+            <div class="side-avatar">اللّوغو</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px">
+          <div class="panel speed-card">
+            <div class="speed-circle" id="speedCircle">
+              <div class="speed-value" id="speedValue">98</div>
+              <div class="speed-unit">كم/س</div>
+              <div class="fuel-ring" id="fuelValue">32L</div>
+            </div>
+          </div>
+          <div class="panel" style="flex:1;display:flex;flex-direction:column;gap:12px">
+            <div class="big-box">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="font-weight:700">إعدادات القلوب والبارات</div>
+                <div style="color:rgba(255,255,255,0.7);font-size:13px">تحكم ألوان وموضع البارات</div>
+              </div>
+              <div style="margin-top:10px" class="colors-row">
+                <div>
+                  <div style="font-size:13px;color:rgba(255,255,255,0.7)">اللون 1 (#1)</div>
+                  <div style="display:flex;gap:8px;margin-top:6px">
+                    <div class="color-swatch" style="background:#e53935"></div>
+                    <div class="color-swatch" style="background:#ff5252"></div>
+                    <div class="color-swatch" style="background:#ff8a65"></div>
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:13px;color:rgba(255,255,255,0.7)">اللون 2 (#2)</div>
+                  <div style="display:flex;gap:8px;margin-top:6px">
+                    <div class="color-swatch" style="background:#fdd835"></div>
+                    <div class="color-swatch" style="background:#ffd54f"></div>
+                    <div class="color-swatch" style="background:#ffb300"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="big-box">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="font-weight:700">نوع الخريطة</div>
+                <div style="color:rgba(255,255,255,0.7);font-size:13px">اختر شكل الخريطة</div>
+              </div>
+              <div style="margin-top:10px" class="controls">
+                <button class="btn" onclick="setMapShape('square')">مربع</button>
+                <button class="btn" onclick="setMapShape('circle')">دائري</button>
+              </div>
+            </div>
+            <div class="big-box" style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="font-weight:700">خيارات أخرى</div>
+                <div style="color:rgba(255,255,255,0.7);font-size:13px">تحكم إضافيّ للواجهة</div>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn" onclick="toggleShadows()">تبديل الشادو</button>
+                <button class="btn" onclick="testNotification()">اختبار إشعار</button>
+                <button class="btn" onclick="toggleCombat()">عرض حالة القتال</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-actions">
+          <button class="btn" onclick="resetSettings()">إعادة تعيين</button>
+          <button class="btn" style="background:#2d9c6f" onclick="saveSettings()">حفظ التعديلات</button>
+        </div>
+      </div>
+      <div class="right-col">
+        <div class="panel side-header">
+          <div style="flex:1">
+            <div style="font-weight:800">لوحة تحكم المعاينة</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:13px">عرض حالة اللاعب وبيانات سريعة</div>
+          </div>
+          <div style="width:120px">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="background:linear-gradient(180deg,#222,#111);padding:8px;border-radius:8px;text-align:center">النسخة: AR/EN</div>
+              <div style="background:linear-gradient(180deg,#0c0c0c,#000);padding:8px;border-radius:8px;text-align:center;color:rgba(255,255,255,0.7)">ver 1.0</div>
+            </div>
+          </div>
+        </div>
+        <div class="panel phone-panel">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <div style="font-weight:700">إعدادات سريعة</div>
+            <div style="color:rgba(255,255,255,0.7);font-size:13px">تجريبية</div>
+          </div>
+          <div class="side-list">
+            <div class="side-item"><div class="label">اللاعب</div><div style="font-weight:700">Player_01</div></div>
+            <div class="side-item"><div class="label">الوظيفة</div><div style="font-weight:700">شرطي</div></div>
+            <div class="side-item"><div class="label">النقد</div><div style="font-weight:700">5,000 $</div></div>
+            <div class="side-item"><div class="label">البنك</div><div style="font-weight:700">15,000 $</div></div>
+            <div class="side-item"><div class="label">المطلوب</div><div style="font-weight:700" id="sideWanted">0</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const settings = document.getElementById('settings');
+    const overlay = document.getElementById('settingsOverlay');
+    const map = document.getElementById('map');
+    const speedValue = document.getElementById('speedValue');
+    const fuelValue = document.getElementById('fuelValue');
+    const sideWanted = document.getElementById('sideWanted');
+    let shadowsEnabled = true;
+    let combatMode = false;
+
+    function toggleSettings() {
+      const isOpen = settings.style.display === 'flex';
+      settings.style.display = isOpen ? 'none' : 'flex';
+      overlay.style.display = isOpen ? 'none' : 'block';
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'F10') toggleSettings();
+    });
+
+    function setMapShape(shape) {
+      if (shape === 'square') map.classList.add('square');
+      else map.classList.remove('square');
+    }
+
+    function toggleShadows() {
+      shadowsEnabled = !shadowsEnabled;
+      document.querySelectorAll('.panel').forEach(p => {
+        p.style.boxShadow = shadowsEnabled ? '0 6px 28px rgba(0,0,0,0.55)' : 'none';
+      });
+      showNotification('تم ' + (shadowsEnabled ? 'تفعيل' : 'تعطيل') + ' الظلال');
+    }
+
+    function testNotification() {
+      showNotification('هذا إشعار تجريبي للـHUD!');
+    }
+
+    function toggleCombat() {
+      combatMode = !combatMode;
+      sideWanted.textContent = combatMode ? '5⭐' : '0';
+      showNotification(combatMode ? 'تم تفعيل وضع القتال!' : 'تم تعطيل وضع القتال!');
+    }
+
+    function resetSettings() {
+      setMapShape('circle');
+      shadowsEnabled = true;
+      combatMode = false;
+      sideWanted.textContent = '0';
+      showNotification('تمت إعادة تعيين الإعدادات!');
+    }
+
+    function saveSettings() {
+      showNotification('تم حفظ الإعدادات!');
+    }
+
+    function showNotification(text) {
+      const notify = document.createElement('div');
+      notify.className = 'notify';
+      notify.textContent = text;
+      settings.appendChild(notify);
+      setTimeout(() => notify.remove(), 2500);
+    }
+
+    // محاكاة السرعة والوقود
+    setInterval(() => {
+      const spd = Math.floor(Math.random()*180);
+      speedValue.textContent = spd;
+      fuelValue.textContent = Math.floor(Math.random()*60)+'L';
+    },1500);
+  </script>
+</body>
+</html>
