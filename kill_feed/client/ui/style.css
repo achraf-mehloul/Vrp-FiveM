@@ -1,0 +1,106 @@
+:root {
+    --bg-color: rgba(0, 0, 0, 0.8);
+    --text-color: #ffffff;
+    --accent-color: #ff4444;
+    --border-color: #ff0000;
+}
+
+.theme-dark {
+    --bg-color: rgba(0, 0, 0, 0.8);
+    --text-color: #ffffff;
+    --accent-color: #ff4444;
+    --border-color: #ff0000;
+}
+
+.theme-light {
+    --bg-color: rgba(255, 255, 255, 0.9);
+    --text-color: #333333;
+    --accent-color: #ff4444;
+    --border-color: #ff0000;
+}
+
+.theme-custom {
+    --bg-color: rgba(30, 30, 30, 0.85);
+    --text-color: #00ffcc;
+    --accent-color: #ffaa00;
+    --border-color: #ff5500;
+}
+
+#killFeedContainer {
+    position: absolute;
+    top: 10%;
+    width: 350px;
+    z-index: 9999;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.3s ease;
+}
+
+.kill-message {
+    background: var(--bg-color);
+    color: var(--text-color);
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border-right: 4px solid var(--border-color);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transform: translateX(100%);
+    animation: slideIn 0.5s ease forwards, fadeOut 0.5s ease 4.5s forwards;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.kill-message.highlight-headshot {
+    border-color: #ff0000;
+    background: linear-gradient(90deg, rgba(255,0,0,0.3), transparent);
+}
+
+.kill-message.highlight-knife {
+    border-color: #00ff00;
+    background: linear-gradient(90deg, rgba(0,255,0,0.3), transparent);
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--accent-color);
+}
+
+.weapon-icon {
+    font-size: 1.2em;
+    transition: transform 0.3s ease;
+}
+
+.weapon-icon:hover {
+    transform: scale(1.3);
+}
+
+.highlight-badge {
+    background: var(--accent-color);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    margin-left: auto;
+}
+
+@keyframes slideIn {
+    to { transform: translateX(0); }
+}
+
+@keyframes fadeOut {
+    to { opacity: 0; transform: translateX(-100%); }
+}
+
+.particle {
+    position: absolute;
+    pointer-events: none;
+    animation: particleMove 1s ease-out;
+}
+
+@keyframes particleMove {
+    0% { transform: translate(0, 0); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)); opacity: 0; }
+}
