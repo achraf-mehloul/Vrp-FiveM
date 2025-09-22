@@ -72,6 +72,7 @@
 │       ├── firewall.lua
 │       ├── rate_limiter.lua
 │       └── modules_loader.lua
+│
 ├── 📂 modules/
 │   ├── 🛠 admin/
 │   │   ├── 📂 client/
@@ -94,6 +95,7 @@
 │   │   │   ├── 001_init.sql
 │   │   │   └── 002_indices.sql
 │   │   └── fxmanifest.lua
+│
 │   ├── 🏦 bank/
 │   │   ├── 📂 client/
 │   │   │   ├── main.lua
@@ -113,6 +115,7 @@
 │   │   │   ├── 001_init.sql
 │   │   │   └── 002_indices.sql
 │   │   └── fxmanifest.lua
+│
 │   ├── 📊 hud/
 │   │   ├── 📂 client/
 │   │   │   ├── main.lua
@@ -133,6 +136,7 @@
 │   │   │   ├── hud_config.lua
 │   │   │   └── utils.lua
 │   │   └── fxmanifest.lua
+│
 │   ├── 🛒 shops/
 │   │   ├── 📂 client/
 │   │   │   ├── main.lua
@@ -165,6 +169,7 @@
 │   │   │   ├── 001_init.sql
 │   │   │   └── 002_indices.sql
 │   │   └── fxmanifest.lua
+│
 │   ├── 🚩 gangs/
 │   │   ├── 📂 client/
 │   │   │   ├── main.lua
@@ -184,44 +189,73 @@
 │   │   │   ├── 001_init.sql
 │   │   │   └── 002_indices.sql
 │   │   └── fxmanifest.lua
-│   └── 🦸 superheroes/
-│       ├── 📂 client/
-│       │   ├── main.lua
-│       │   ├── abilities.lua
-│       │   ├── nui_handler.lua
-│       │   ├── power_ui.lua
-│       │   ├── audio_manager.lua
-│       │   ├── special_effects.lua
-│       │   ├── visual_effects.lua
-│       │   └── 📂 ui/
-│       │       ├── index.html
-│       │       ├── style.css
-│       │       └── app.js
-│       ├── 📂 server/
-│       │   ├── main.lua
-│       │   ├── hero_controller.lua
-│       │   ├── hero_service.lua
-│       │   ├── hero_repository.lua
-│       │   ├── cooldown_manager.lua
-│       │   ├── security_system.lua
-│       │   ├── stats_system.lua
-│       │   └── upgrade_system.lua
+│
+│   ├── 🦸 superheroes/
+│   │   ├── 📂 client/
+│   │   │   ├── main.lua
+│   │   │   ├── abilities.lua
+│   │   │   ├── nui_handler.lua
+│   │   │   ├── power_ui.lua
+│   │   │   ├── audio_manager.lua
+│   │   │   ├── special_effects.lua
+│   │   │   ├── visual_effects.lua
+│   │   │   └── 📂 ui/
+│   │   │       ├── index.html
+│   │   │       ├── style.css
+│   │   │       └── app.js
+│   │   ├── 📂 server/
+│   │   │   ├── main.lua
+│   │   │   ├── hero_controller.lua
+│   │   │   ├── hero_service.lua
+│   │   │   ├── hero_repository.lua
+│   │   │   ├── cooldown_manager.lua
+│   │   │   ├── security_system.lua
+│   │   │   ├── stats_system.lua
+│   │   │   └── upgrade_system.lua
+│   │   ├── 📂 shared/
+│   │   │   ├── config.lua
+│   │   │   ├── locales.lua
+│   │   │   ├── powers_catalog.lua
+│   │   │   ├── powers.lua
+│   │   │   └── utils.lua
+│   │   ├── 📂 sql/
+│   │   │   ├── 001_init.sql
+│   │   │   └── 002_indices.sql
+│   │   └── fxmanifest.lua
+│
+│   └── 💀 kill_feed/
+│       ├── fxmanifest.lua
 │       ├── 📂 shared/
-│       │   ├── config.lua
-│       │   ├── locales.lua
-│       │   ├── powers_catalog.lua
-│       │   ├── powers.lua
-│       │   └── utils.lua
-│       ├── 📂 sql/
-│       │   ├── 001_init.sql
-│       │   └── 002_indices.sql
-│       └── fxmanifest.lua
+│       │   └── config.lua
+│       ├── 📂 server/
+│       │   └── main.lua
+│       └── 📂 client/
+│           ├── main.lua
+│           └── 📂 ui/
+│               ├── index.html
+│               ├── style.css
+│               ├── app.js
+│               ├── api.js
+│               └── 📂 sounds/
+│                   ├── pistol_shot.ogg
+│                   ├── knife_stab.ogg
+│                   ├── sniper_shot.ogg
+│                   ├── rifle_shot.ogg
+│                   ├── shotgun_shot.ogg
+│                   ├── smg_shot.ogg
+│                   ├── headshot.ogg
+│                   ├── knife_kill.ogg
+│                   ├── double_kill.ogg
+│                   ├── suicide.ogg
+│                   └── default.ogg
+│
 ├── 📂 shared/
 │   ├── constants.lua
 │   ├── enums.lua
 │   ├── events_registry.lua
 │   ├── global_state_manager.lua
 │   └── utils.lua
+│
 ├── 📂 scripts/
 │   ├── daily_rewards.lua
 │   ├── dynamic_missions.lua
@@ -229,6 +263,7 @@
 │   ├── player_competitions.lua
 │   ├── seasonal_events.lua
 │   └── training_modules.lua
+│
 ├── 📂 tests/
 │   ├── 📂 integration/
 │   │   ├── db_connection_tests.lua
@@ -239,11 +274,13 @@
 │       ├── bank_tests.lua
 │       ├── shops_tests.lua
 │       └── gangs_tests.lua
+│
 └── 📂 tools/
     ├── auto_deploy.lua
     ├── debug_console.lua
     ├── migration_tool.lua
     └── profiler.lua
+
 ```
 
 ---
@@ -442,3 +479,4 @@ shared_scripts {
 - المشروع مازال قيد التطوير، بعض الموديلات والوظائف لم تكتمل بعد
 - يوصى بعدم استخدامه في بيئة production حتى الإصدار النهائي
 - تأكد من اختبار جميع الوظائف قبل النشر على السيرفر الرئيسي
+
